@@ -19,6 +19,5 @@ public class AppTest
     {
         IPParser.RegionInfo regionInfo = IPParser.getInstance().analyseIp("120.196.100.99");
         System.out.println(regionInfo.getProvince());
-        System.out.println();
     }
 }
