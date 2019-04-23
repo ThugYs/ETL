@@ -23,7 +23,7 @@ public class GetPageId {
     }
 
     public static void main(String[] args) {
-        System.out.println(getPageId("http://www.yihaodian.com/cms/view.do?topicId=14582"));
+        System.out.println(getPageId("http://www.yihaodian.com/cms/view.do?topicId=14652"));
         System.out.println(getPageId("http://www.yihaodian.com/cms/view.do?topicId=22372&merchant=1"));
 
     }
