@@ -3,17 +3,17 @@
 	"name": "RunRecord",
 	"namespace": "com.hainiu",
 	"fields": [{
-           "name": "time",
-            "type": "long",
-             "default": -1
+	        "name": "time",
+	        "type": "long",
+            "default": -1
         },{
 			"name": "idCountry",
 			"type": "string",
 			"default":"null"
 		},{
 			"name": "id",
-			"type": "int",
-			"default":-1
+			"type": "string",
+			"default":"null"
 		}, {
 			"name": "country",
 			"type": "string",

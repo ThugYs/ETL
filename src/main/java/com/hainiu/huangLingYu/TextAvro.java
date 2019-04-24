@@ -20,7 +20,10 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -43,12 +46,20 @@ public class TextAvro extends BaseMR {
             Map<String, String> valueOut = logParser.parse2(lineValue);
 
             GenericRecord genericRecord = new GenericData.Record(schema);
-            SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
-
-            genericRecord.put("uptime", sdf.format((valueOut.get("uptime"))));
+            SimpleDateFormat sdf = new SimpleDateFormat(
+                    "[dd/MMM/yyyy:HH:mm:ss Z]", new Locale("ENGLISH", "CHINA"));
+            Date date = null;
+            try {
+                if(valueOut.get("date") != null){
+                    date = sdf.parse(valueOut.get("date"));
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            genericRecord.put("time",date.getTime());
 //          genericRecord.put("time",Long.parseLong(valueOut.get("time")));
             genericRecord.put("idCountry",valueOut.get("idCountry"));
-            genericRecord.put("id",Long.parseLong(valueOut.get("id")));
+            genericRecord.put("id",valueOut.get("id"));
             genericRecord.put("country",valueOut.get("country"));
             genericRecord.put("ref",valueOut.get("ref"));
             genericRecord.put("userAgent",valueOut.get("userAgent"));

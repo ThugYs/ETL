@@ -32,7 +32,6 @@ public class LogParser {
             logInfo.put("idCountry",idCountry);
             logInfo.put("id",id);
             logInfo.put("country",country);
-
             logInfo.put("ref",ref);
             logInfo.put("useAgent",useAgent);
 

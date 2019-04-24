@@ -29,7 +29,7 @@ public class TextAvroJob extends Configured implements Tool {
         return 0;
     }
     public static void main(String[] args) throws Exception {
-//		 -Dtask.id=TextAvroJob -Dtask.input.dir=/tmp/etl/input  -Dtask.base.dir=/tmp/etl/output
+//		 -Dtask.id=TextAvroJob -Dtask.input.dir=data/etl/input  -Dtask.base.dir=data/etl/output
         System.exit(ToolRunner.run(new TextAvroJob(), args));
     }
 }
