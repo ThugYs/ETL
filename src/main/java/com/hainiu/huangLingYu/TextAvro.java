@@ -9,7 +9,6 @@ import org.apache.avro.mapred.AvroKey;
 import org.apache.avro.mapreduce.AvroJob;
 import org.apache.avro.mapreduce.AvroKeyOutputFormat;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.hive.ql.io.orc.CompressionKind;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
@@ -46,9 +45,6 @@ public class TextAvro extends BaseMR {
             GenericRecord genericRecord = new GenericData.Record(schema);
             SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
 
-//            genericRecord.put("uptime", sdf.format((valueOut.get("uptime"))));
-//          genericRecord.put("time",Long.parseLong(valueOut.get("time")));
-//            genericRecord.put("idCountry",valueOut.get("idCountry"));
             genericRecord.put("id",valueOut.get("id"));
             genericRecord.put("country",valueOut.get("country"));
             genericRecord.put("ref",valueOut.get("ref"));
