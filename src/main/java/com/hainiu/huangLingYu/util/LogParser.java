@@ -5,16 +5,15 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class LogParser {
 
     private Logger logger = LoggerFactory.getLogger(LogParser.class);
 
-    public Map<String, String> parse2(String log)  {
+    public Map<String,String> parse2(String log)  {
 
-        Map<String, String> logInfo = new HashMap<String,String>();
+        Map<String,String> logInfo = new TreeMap<String, String>();
         IPParser ipParse = IPParser.getInstance();
         if(StringUtils.isNotBlank(log)) {
             String[] splits = log.split("\001");
@@ -29,8 +28,8 @@ public class LogParser {
             String[] arr = idCountry.split("&");
             String id = arr[0].split("=")[1];
             String country = arr[1].split("=")[1];
-            String ref =splits[7];
-            String userAgent=splits[8];
+            String ref =splits[6];
+            String userAgent=splits[7];
             String[] arr2=userAgent.split("/");
             //浏览器
             String browser=arr2[0].split(":")[1];
@@ -38,16 +37,12 @@ public class LogParser {
             String version=arr2[2];
 
             logInfo.put("uptime",uptime);
-            logInfo.put("idCountry",idCountry);
             logInfo.put("id",id);
             logInfo.put("country",country);
-
             logInfo.put("ref",ref);
-            logInfo.put("userAgent",userAgent);
             logInfo.put("browser",browser);
             logInfo.put("type",type);
             logInfo.put("version",version);
-
 
         } else{
             logger.error("日志记录的格式不正确：" + log);

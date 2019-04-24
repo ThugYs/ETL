@@ -20,10 +20,7 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
 
 
@@ -46,23 +43,14 @@ public class TextAvro extends BaseMR {
             Map<String, String> valueOut = logParser.parse2(lineValue);
 
             GenericRecord genericRecord = new GenericData.Record(schema);
-            SimpleDateFormat sdf = new SimpleDateFormat(
-                    "[dd/MMM/yyyy:HH:mm:ss Z]", new Locale("ENGLISH", "CHINA"));
-            Date date = null;
-            try {
-                if(valueOut.get("date") != null){
-                    date = sdf.parse(valueOut.get("date"));
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            genericRecord.put("time",date.getTime());
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+
+//            genericRecord.put("uptime", sdf.format((valueOut.get("uptime"))));
 //          genericRecord.put("time",Long.parseLong(valueOut.get("time")));
-            genericRecord.put("idCountry",valueOut.get("idCountry"));
+//            genericRecord.put("idCountry",valueOut.get("idCountry"));
             genericRecord.put("id",valueOut.get("id"));
             genericRecord.put("country",valueOut.get("country"));
             genericRecord.put("ref",valueOut.get("ref"));
-            genericRecord.put("userAgent",valueOut.get("userAgent"));
             genericRecord.put("browser",valueOut.get("browser"));
             genericRecord.put("type",valueOut.get("type"));
             genericRecord.put("version",valueOut.get("version"));
@@ -74,10 +62,6 @@ public class TextAvro extends BaseMR {
 
     @Override
     public Job getJob() throws IOException {
-        //设置orc文件snappy压缩
-        conf.set("orc.compress", CompressionKind.SNAPPY.name());
-        //设置orc文件 有索引
-        conf.set("orc.create.index", "true");
         Job job = Job.getInstance(conf, getJobNameWithTaskId());
         job.setJarByClass(TextAvro.class);
         job.setMapperClass(TextAvroMapper.class);

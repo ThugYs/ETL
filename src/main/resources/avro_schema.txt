@@ -3,14 +3,6 @@
 	"name": "RunRecord",
 	"namespace": "com.hainiu",
 	"fields": [{
-	        "name": "time",
-	        "type": "long",
-            "default": -1
-        },{
-			"name": "idCountry",
-			"type": "string",
-			"default":"null"
-		},{
 			"name": "id",
 			"type": "string",
 			"default":"null"
@@ -23,10 +15,6 @@
 			"type": "string",
 			"default":"null"
 		},{
-         	"name": "userAgent",
-         	"type": "string",
-         	"default":"null"
-         },{
             "name": "browser",
             "type": "string",
             "default":"null"
