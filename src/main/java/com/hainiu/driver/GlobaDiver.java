@@ -1,5 +1,7 @@
 package com.hainiu.driver;
 
+import com.hainiu.huangLingYu.AvroOrcJob;
+import com.hainiu.huangLingYu.TextAvroJob;
 import org.apache.hadoop.util.ProgramDriver;
 
 public class GlobaDiver {
@@ -8,7 +10,9 @@ public class GlobaDiver {
         int exitCode = -1;
         ProgramDriver programDriver = new ProgramDriver();
         try {
-//            programDriver.addClass("AvroToHFile" , AvroToHFileJob.class , "Avro文件转hfile文件");
+            programDriver.addClass("TextAvro" , TextAvroJob.class , "hfile文件转Avro");
+            programDriver.addClass("AvroOrc" , AvroOrcJob.class , "Avro转Orc");
+
 
             exitCode = programDriver.run(args);
         } catch (Throwable throwable) {

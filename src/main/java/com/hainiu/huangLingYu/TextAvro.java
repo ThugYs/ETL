@@ -8,6 +8,8 @@ import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.mapred.AvroKey;
 import org.apache.avro.mapreduce.AvroJob;
 import org.apache.avro.mapreduce.AvroKeyOutputFormat;
+import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
@@ -74,7 +76,26 @@ public class TextAvro extends BaseMR {
         AvroJob.setMapOutputKeySchema(job, schema);
 
         //一个region的输入目录
-        FileInputFormat.addInputPath(job, getFirstJobInputPath());
+       FileInputFormat.addInputPath(job, getFirstJobInputPath());
+        //多个目录输入
+//        FileSystem fs = FileSystem.get(conf);
+//        FileStatus[] listStatus = fs.listStatus(getFirstJobInputPath());
+//        StringBuilder sb = new StringBuilder();
+//        for(FileStatus fileStatus : listStatus){
+//            String path = fileStatus.getPath().toString();
+//            if(path.contains(".")){
+//                System.out.println(path);
+//                continue;
+//            }
+//            sb.append(path).append("/cf,");
+//
+//        }
+//        sb.deleteCharAt(sb.length() - 1);
+//        System.out.println("-------------");
+//        System.out.println("inputpaths:" + sb.toString());
+//        FileInputFormat.addInputPaths(job, sb.toString());
+
+
         // 设置输出目录
         Path outputDir = getOutputPath(getJobNameWithTaskId());
         FileOutputFormat.setOutputPath(job, outputDir);
