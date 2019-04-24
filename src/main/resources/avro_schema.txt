@@ -1,0 +1,43 @@
+{
+	"type": "record",
+	"name": "RunRecord",
+	"namespace": "com.hainiu",
+	"fields": [{
+			"name": "data",
+			"type": "long",
+			"default":-1
+		},{
+			"name": "idCountry",
+			"type": "string",
+			"default":"null"
+		},{
+			"name": "id",
+			"type": "int",
+			"default":-1
+		}, {
+			"name": "country",
+			"type": "string",
+			"default":"null"
+		},{
+			"name": "ref",
+			"type": "string",
+			"default":"null"
+		},{
+         	"name": "userAgent",
+         	"type": "string",
+         	"default":"null"
+         },{
+            "name": "browser",
+            "type": "string",
+            "default":"null"
+         },{
+             "name": "type",
+             "type": "string",
+              "default":"null"
+         },{
+             "name": "version",
+             "type": "string",
+             "default":"null"
+         }
+	]
+}
