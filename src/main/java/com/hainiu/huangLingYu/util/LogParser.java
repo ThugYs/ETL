@@ -22,25 +22,28 @@ public class LogParser {
 //curl -s -o /dev/null -H "User-Agent:${user_agent}" -e "${ref}" "http://nn1.hadoop?id=${md5}&country=${country}
 //192.168.217.210-[23/Apr/2019:23:59:31 +0800]"GET /?id=b026324c6904b2a9cb4b88d6d61c81d1&country=CN HTTP/1.1"200555"www.baidu.com" "User-Agent:Mozilla/5.0(iPad;U;CPUOS4_3_3likeMacOSX;en-us)AppleWebKit/533.17.9(KHTML,likeGecko)Version/5.0.2Mobile/8J2Safari/6533.18.5""-"
             String date = splits[2];
+            String[] times=date.split(" ");
+            String time=times[0];
+            String uptime=time.replace("[","");
             String idCountry=splits[3];
             String[] arr = idCountry.split("&");
             String id = arr[0].split("=")[1];
             String country = arr[1].split("=")[1];
             String ref =splits[7];
-            String useAgent=splits[8];
-            String[] arr2=useAgent.split("/");
+            String userAgent=splits[8];
+            String[] arr2=userAgent.split("/");
             //浏览器
             String browser=arr2[0].split(":")[1];
             String type=arr2[1];
             String version=arr2[2];
 
-            logInfo.put("date",date);
+            logInfo.put("uptime",uptime);
             logInfo.put("idCountry",idCountry);
             logInfo.put("id",id);
             logInfo.put("country",country);
 
             logInfo.put("ref",ref);
-            logInfo.put("useAgent",useAgent);
+            logInfo.put("userAgent",userAgent);
             logInfo.put("browser",browser);
             logInfo.put("type",type);
             logInfo.put("version",version);

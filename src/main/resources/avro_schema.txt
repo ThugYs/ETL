@@ -3,10 +3,10 @@
 	"name": "RunRecord",
 	"namespace": "com.hainiu",
 	"fields": [{
-			"name": "data",
-			"type": "long",
-			"default":-1
-		},{
+           "name": "time",
+            "type": "long",
+             "default": -1
+        },{
 			"name": "idCountry",
 			"type": "string",
 			"default":"null"
