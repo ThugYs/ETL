@@ -1,0 +1,55 @@
+{
+	"type": "record",
+	"name": "log_0424_avro",
+	"namespace": "com.qiao",
+	"fields": [{
+			"name": "ip",
+			"type": "string",
+			"default":"null"
+		}, {
+			"name": "time",
+			"type": "long",
+			"default": -1
+		},{
+			"name": "request_info",
+			"type": "string",
+			"default":"null"
+		},{
+            "name": "ref",
+            "type": "string",
+            "default":"null"
+         },{
+             "name": "userAgent",
+             "type": "string",
+              "default":"null"
+         },{
+             "name": "country",
+             "type": "string",
+             "default":"null"
+         },{
+             "name": "provite",
+             "type": "string",
+             "default":"null"
+         },{
+             "name": "city",
+             "type": "string",
+             "default":"null"
+         },{
+             "name": "year",
+             "type": "string",
+             "default":"null"
+         },{
+             "name": "month",
+             "type": "string",
+             "default":"null"
+         },{
+             "name": "day",
+             "type": "string",
+             "default":"null"
+         },{
+             "name": "dayDate",
+             "type": "string",
+             "default":"null"
+         }
+	]
+}

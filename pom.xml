@@ -16,8 +16,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <!-- 此处指定main方法入口的class -->
-        <mainClass>com.hainiu.driver.GlobaDiver</mainClass>
     </properties>
 
 
@@ -113,7 +111,8 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>${mainClass}</mainClass>
+                            <!-- 此处指定main方法入口的class -->
+                            <mainClass>com.hainiu.driver.GlobaDiver</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

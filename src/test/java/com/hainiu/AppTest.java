@@ -14,7 +14,9 @@ public class AppTest
     @Test
     public void shouldAnswerWithTrue()
     {
-        IPParser.RegionInfo regionInfo = IPParser.getInstance().analyseIp("120.196.100.99");
+        IPParser.RegionInfo regionInfo = IPParser.getInstance().analyseIp("27.19.151.96");
+        System.out.println(regionInfo.getCountry());
         System.out.println(regionInfo.getProvince());
+        System.out.println(regionInfo.getCity());
     }
 }
