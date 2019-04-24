@@ -45,14 +45,14 @@ public class TextAvro extends BaseMR {
             Map<String, String> valueOut = logParser.parse2(lineValue);
 
             GenericRecord genericRecord = new GenericData.Record(schema);
-            SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+//            SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
 
-            genericRecord.put("id",valueOut.get("id"));
-            genericRecord.put("country",valueOut.get("country"));
-            genericRecord.put("ref",valueOut.get("ref"));
-            genericRecord.put("browser",valueOut.get("browser"));
-            genericRecord.put("type",valueOut.get("type"));
-            genericRecord.put("version",valueOut.get("version"));
+            genericRecord.put("id",valueOut.get("id") == null ? "":valueOut.get("id"));
+            genericRecord.put("country",valueOut.get("country") == null ? "":valueOut.get("country"));
+            genericRecord.put("ref",valueOut.get("ref") == null ? "":valueOut.get("ref"));
+            genericRecord.put("browser",valueOut.get("browser") == null ? "":valueOut.get("browser"));
+            genericRecord.put("type",valueOut.get("type") == null ? "":valueOut.get("type"));
+            genericRecord.put("version",valueOut.get("version") == null ? "":valueOut.get("version"));
 
             context.write(new AvroKey<GenericRecord>(genericRecord) , NullWritable.get());
         }
@@ -92,7 +92,7 @@ public class TextAvro extends BaseMR {
 //        }
 //        sb.deleteCharAt(sb.length() - 1);
 //        System.out.println("-------------");
-//        System.out.println("inputpaths:" + sb.toString());
+//        System.out.println("i nputpaths:" + sb.toString());
 //        FileInputFormat.addInputPaths(job, sb.toString());
 
 
