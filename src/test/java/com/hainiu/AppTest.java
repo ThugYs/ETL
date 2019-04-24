@@ -1,9 +1,6 @@
 package com.hainiu;
 
-import static org.junit.Assert.assertTrue;
-
 import com.hainiu.util.IPParser;
-import com.hainiu.util.LogParser;
 import org.junit.Test;
 
 /**

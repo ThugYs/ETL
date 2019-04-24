@@ -18,7 +18,7 @@ public class LogParser {
         Map<String, String> logInfo = new HashMap<String,String>();
         IPParser ipParse = IPParser.getInstance();
         if(StringUtils.isNotBlank(log)) {
-            String[] splits = log.split("\t");
+            String[] splits = log.split("\001");
 
             String ip = splits[0];
             String url = splits[1];
