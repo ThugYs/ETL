@@ -1,6 +1,6 @@
 package com.hainiu.huangLingYu;
 
-import com.hainiu.util.LogParser;
+import com.hainiu.huangLingYu.util.LogParser;
 import com.hainiu.util.base.BaseMR;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
@@ -39,6 +39,7 @@ public class TextAvro extends BaseMR {
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             String lineValue = value.toString();
+
             LogParser logParser = new LogParser();
             Map<String, String> valueOut = logParser.parse2(lineValue);
 
