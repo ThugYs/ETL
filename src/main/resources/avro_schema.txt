@@ -3,6 +3,10 @@
 	"name": "RunRecord",
 	"namespace": "com.hainiu",
 	"fields": [{
+           "name": "uptime",
+            "type": "string",
+            "default":"null"
+            },{
 			"name": "id",
 			"type": "string",
 			"default":"null"
@@ -15,17 +19,21 @@
 			"type": "string",
 			"default":"null"
 		},{
-            "name": "browser",
+             "name": "OsCompany",
+             "type": "string",
+            "default":"null"
+       },{
+           "name": "Type",
             "type": "string",
             "default":"null"
-         },{
-             "name": "type",
-             "type": "string",
-              "default":"null"
-         },{
-             "name": "version",
-             "type": "string",
-             "default":"null"
-         }
+        },{
+           "name": "UaFamily",
+           "type": "string",
+           "default":"null"
+        },{
+           "name": "DeviceType",
+           "type": "string",
+            "default":"null"
+          }
 	]
 }

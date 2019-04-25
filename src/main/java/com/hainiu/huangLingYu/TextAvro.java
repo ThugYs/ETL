@@ -2,14 +2,13 @@ package com.hainiu.huangLingYu;
 
 import com.hainiu.huangLingYu.util.LogParser;
 import com.hainiu.util.base.BaseMR;
+import cz.mallat.uasparser.UserAgentInfo;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.mapred.AvroKey;
 import org.apache.avro.mapreduce.AvroJob;
 import org.apache.avro.mapreduce.AvroKeyOutputFormat;
-import org.apache.hadoop.fs.FileStatus;
-import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
@@ -21,7 +20,10 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -42,17 +44,32 @@ public class TextAvro extends BaseMR {
             String lineValue = value.toString();
 
             LogParser logParser = new LogParser();
+            String format="";
             Map<String, String> valueOut = logParser.parse2(lineValue);
+            String uptime=valueOut.get("uptime");
+            SimpleDateFormat sdf1=new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss", Locale.ENGLISH);
+            try {
+                if(uptime !=null){
+                    Date date =sdf1.parse(uptime.toString());
+                    format = sdf1.format(date);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
+
+            String useAgent = valueOut.get("useAgent");
+            UserAgentInfo userAgentInfo = UserAgent.uasParser.parse(useAgent);
             GenericRecord genericRecord = new GenericData.Record(schema);
-//            SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
 
+            genericRecord.put("uptime",format);
             genericRecord.put("id",valueOut.get("id") == null ? "":valueOut.get("id"));
             genericRecord.put("country",valueOut.get("country") == null ? "":valueOut.get("country"));
             genericRecord.put("ref",valueOut.get("ref") == null ? "":valueOut.get("ref"));
-            genericRecord.put("browser",valueOut.get("browser") == null ? "":valueOut.get("browser"));
-            genericRecord.put("type",valueOut.get("type") == null ? "":valueOut.get("type"));
-            genericRecord.put("version",valueOut.get("version") == null ? "":valueOut.get("version"));
+            genericRecord.put("OsCompany",userAgentInfo.getOsCompany()  == null ? "":userAgentInfo.getOsCompany());
+            genericRecord.put("Type",userAgentInfo.getType());
+            genericRecord.put("UaFamily",userAgentInfo.getUaFamily());
+            genericRecord.put("DeviceType",userAgentInfo.getDeviceType());
 
             context.write(new AvroKey<GenericRecord>(genericRecord) , NullWritable.get());
         }
@@ -77,24 +94,6 @@ public class TextAvro extends BaseMR {
 
         //一个region的输入目录
        FileInputFormat.addInputPath(job, getFirstJobInputPath());
-        //多个目录输入
-//        FileSystem fs = FileSystem.get(conf);
-//        FileStatus[] listStatus = fs.listStatus(getFirstJobInputPath());
-//        StringBuilder sb = new StringBuilder();
-//        for(FileStatus fileStatus : listStatus){
-//            String path = fileStatus.getPath().toString();
-//            if(path.contains(".")){
-//                System.out.println(path);
-//                continue;
-//            }
-//            sb.append(path).append("/cf,");
-//
-//        }
-//        sb.deleteCharAt(sb.length() - 1);
-//        System.out.println("-------------");
-//        System.out.println("i nputpaths:" + sb.toString());
-//        FileInputFormat.addInputPaths(job, sb.toString());
-
 
         // 设置输出目录
         Path outputDir = getOutputPath(getJobNameWithTaskId());
