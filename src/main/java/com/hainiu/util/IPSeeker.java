@@ -1,5 +1,9 @@
 package com.hainiu.util;
 
+import com.hainiu.qiaoChunYu.logETL.LogETLTest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -12,6 +16,8 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class IPSeeker {
+    Logger logger = LoggerFactory.getLogger(IPSeeker.class);
+
     public static final String ERROR_RESULT = "错误的IP数据库文件";
     // 一些固定常量，比如记录长度等等
     private static final int IP_RECORD_LENGTH = 7;
@@ -45,8 +51,11 @@ public class IPSeeker {
         b4 = new byte[4];
         b3 = new byte[3];
         try {
+//            logger.info("******************** \t " + ipFilePath);
+            System.out.println( "******************** \t " + ipFilePath);
             ipFile = new RandomAccessFile(ipFilePath, "r");
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
             System.out.println("IP地址信息文件没有找到，IP显示功能将无法使用");
             ipFile = null;
 

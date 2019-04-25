@@ -6,6 +6,8 @@ import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.mapred.AvroKey;
+import org.apache.avro.mapreduce.AvroJob;
+import org.apache.avro.mapreduce.AvroKeyOutputFormat;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
@@ -14,9 +16,9 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,17 +27,26 @@ import java.util.Locale;
 
 public class LogETLTest extends BaseMR {
 
+    public static Schema schema = null;
+
+    public static Schema.Parser parser = new Schema.Parser();
+
     private static class LogETLMapper extends Mapper<LongWritable, Text, AvroKey<GenericRecord>, NullWritable> {
 
-        public static Schema schema = null;
+        IPParser ipParser = null;
 
-        public static Schema.Parser parser = new Schema.Parser();
+        Logger logger = LoggerFactory.getLogger(LogETLTest.class);
 
         @Override
         protected void setup(Context context) throws IOException, InterruptedException {
             if (schema == null) {
                 schema = parser.parse(LogETLTest.class.getResourceAsStream("/qcy_schema/log_schema.txt"));
             }
+
+            logger.info("===========================");
+//            logger.info(LogETLTest.class.getResource("/qqwry.dat").getPath());
+            ipParser = new IPParser("hdfs:////ns1/user/qiaoChunYu/config/qqwry.dat");
+
         }
 
         @Override
@@ -58,7 +69,12 @@ public class LogETLTest extends BaseMR {
 
             if (logs.length != 0 && logs[0] != null) {
                 ip = logs[0];
-                IPParser.RegionInfo regionInfo = IPParser.getInstance().analyseIp(logs[0] != null ? logs[0] : null);
+                IPParser.RegionInfo regionInfo = null;
+                try {
+                    regionInfo = ipParser.analyseIp(logs[0] != null ? logs[0] : null);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
                 if (regionInfo != null) {
                     country = regionInfo.getCountry();
                     provite = regionInfo.getProvince();
@@ -100,20 +116,20 @@ public class LogETLTest extends BaseMR {
             }
             GenericRecord record = new GenericData.Record(schema);
 
-            record.put("ip", ip);
+            record.put("ip", ip == "" || ip == null ? "" : ip);
             record.put("time", time);
-            record.put("request_info", request_info);
-            record.put("ref", ref);
-            record.put("userAgent", userAgent);
-            record.put("country", country);
-            record.put("provite", provite);
-            record.put("city", city);
-            record.put("year", year);
-            record.put("month", month);
-            record.put("day", day);
-            record.put("dayDate", dayDate);
+            record.put("request_info", request_info == "" || request_info == null ? "" : request_info);
+            record.put("ref", ref == "" || ref == null ? "" : ref);
+            record.put("userAgent", userAgent == "" || userAgent == null ? "" : userAgent);
+            record.put("country", country == "" || country == null ? "" : country);
+            record.put("provite", provite == "" || provite == null ? "" : provite);
+            record.put("city", city == "" || city == null ? "" : city);
+            record.put("year", year == "" || year == null ? "" : year);
+            record.put("month", month == "" || month == null ? "" : month);
+            record.put("day", day == "" || day == null ? "" : day);
+            record.put("dayDate", dayDate == "" || dayDate == null ? "" : dayDate);
 
-            context.write(new AvroKey<>(record) , NullWritable.get());
+            context.write(new AvroKey<>(record), NullWritable.get());
         }
     }
 
@@ -127,9 +143,14 @@ public class LogETLTest extends BaseMR {
         job.setMapperClass(LogETLMapper.class);
         job.setNumReduceTasks(0);
 
-        job.setMapOutputKeyClass(Text.class);
-        job.setMapOutputValueClass(Text.class);
+        job.setMapOutputKeyClass(AvroKey.class);
+        job.setMapOutputValueClass(NullWritable.class);
 
+        schema = parser.parse(LogETLTest.class.getResourceAsStream("/qcy_schema/log_schema.txt"));
+
+        AvroJob.setMapOutputKeySchema(job, schema);
+
+        job.setOutputFormatClass(AvroKeyOutputFormat.class);
         FileInputFormat.addInputPath(job, getFirstJobInputPath());
         FileOutputFormat.setOutputPath(job, getOutputPath(getJobNameWithTaskId()));
 
@@ -138,6 +159,6 @@ public class LogETLTest extends BaseMR {
 
     @Override
     public String getJobName() {
-        return null;
+        return "LogToAvro";
     }
 }

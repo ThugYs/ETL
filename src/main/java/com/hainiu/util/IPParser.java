@@ -3,14 +3,12 @@ package com.hainiu.util;
 public class IPParser extends IPSeeker {
     // 地址 仅仅只是在ecplise环境中使用，部署在服务器上，需要先将qqwry.dat放在集群的各个节点某个有读取权限目录，
     // 然后在这里指定全路径
-    private static final String ipFilePath = "data/ip/qqwry.dat";
+//    private static final String ipFilePath = "data/ip/qqwry.dat";
     // 部署在服务器上
-    //private static final String ipFilePath = "/opt/datas/qqwry.dat";
-    private static IPParser obj = new IPParser(ipFilePath);
+    private static final String ipFilePath = IPParser.class.getResource("/qqwry.dat").getFile();
+    private static IPParser obj = null;
 
-
-
-    protected IPParser(String ipFilePath) {
+    public IPParser(String ipFilePath) {
         super(ipFilePath);
     }
 
