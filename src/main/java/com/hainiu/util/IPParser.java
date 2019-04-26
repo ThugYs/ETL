@@ -1,5 +1,7 @@
 package com.hainiu.util;
 
+import java.io.File;
+
 public class IPParser extends IPSeeker {
     // 地址 仅仅只是在ecplise环境中使用，部署在服务器上，需要先将qqwry.dat放在集群的各个节点某个有读取权限目录，
     // 然后在这里指定全路径
@@ -9,6 +11,10 @@ public class IPParser extends IPSeeker {
     private static IPParser obj = null;
 
     public IPParser(String ipFilePath) {
+        super(ipFilePath);
+    }
+
+    public IPParser(File ipFile) {
         super(ipFilePath);
     }
 

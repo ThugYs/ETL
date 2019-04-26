@@ -18,38 +18,66 @@
             "name": "ref",
             "type": "string",
             "default":"null"
-         },{
+        },{
              "name": "userAgent",
              "type": "string",
               "default":"null"
-         },{
+        },{
              "name": "country",
              "type": "string",
              "default":"null"
-         },{
+        },{
              "name": "provite",
              "type": "string",
              "default":"null"
-         },{
+        },{
              "name": "city",
              "type": "string",
              "default":"null"
-         },{
+        },{
              "name": "year",
              "type": "string",
              "default":"null"
-         },{
+        },{
              "name": "month",
              "type": "string",
              "default":"null"
-         },{
+        },{
              "name": "day",
              "type": "string",
              "default":"null"
-         },{
+        },{
              "name": "dayDate",
              "type": "string",
              "default":"null"
-         }
+        },{
+            "name": "OsCompany",
+            "type": "string",
+            "default":"null"
+        },{
+            "name": "OsFamily",
+            "type": "string",
+            "default":"null"
+        },{
+            "name": "OsName",
+            "type": "string",
+            "default":"null"
+        },{
+            "name": "Type",
+            "type": "string",
+            "default":"null"
+        },{
+            "name": "UaFamily",
+            "type": "string",
+            "default":"null"
+        },{
+            "name": "BrowserVersionInfo",
+            "type": "string",
+            "default":"null"
+        },{
+            "name": "DeviceType",
+            "type": "string",
+            "default":"null"
+        }
 	]
 }

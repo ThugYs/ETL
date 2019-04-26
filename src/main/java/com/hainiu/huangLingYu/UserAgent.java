@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class UserAgent {
 
-    static UASparser uasParser = null;
+    public static UASparser uasParser = null;
 
     static {
 

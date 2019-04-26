@@ -1,7 +1,10 @@
 package com.hainiu.qiaoChunYu.logETL;
 
+import com.hainiu.huangLingYu.UserAgent;
 import com.hainiu.util.IPParser;
+import com.hainiu.util.IPUtil;
 import com.hainiu.util.base.BaseMR;
+import cz.mallat.uasparser.UserAgentInfo;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
@@ -19,7 +22,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,17 +39,15 @@ public class LogETLTest extends BaseMR {
         IPParser ipParser = null;
 
         Logger logger = LoggerFactory.getLogger(LogETLTest.class);
+        IPUtil ipUtil = null;
 
         @Override
         protected void setup(Context context) throws IOException, InterruptedException {
             if (schema == null) {
                 schema = parser.parse(LogETLTest.class.getResourceAsStream("/qcy_schema/log_schema.txt"));
             }
-
-            logger.info("===========================");
-//            logger.info(LogETLTest.class.getResource("/qqwry.dat").getPath());
-            ipParser = new IPParser("hdfs:////ns1/user/qiaoChunYu/config/qqwry.dat");
-
+            ipUtil = new IPUtil();
+            ipUtil.loadIPFile();
         }
 
         @Override
@@ -65,13 +66,20 @@ public class LogETLTest extends BaseMR {
             String month = "";
             String day = "";
             String dayDate = "";
+            String OsCompany = "";
+            String OsFamily = "";
+            String OsName = "";
+            String Type = "";
+            String UaFamily = "";
+            String BrowserVersionInfo = "";
+            String DeviceType = "";
             // 数据源 end
 
             if (logs.length != 0 && logs[0] != null) {
                 ip = logs[0];
                 IPParser.RegionInfo regionInfo = null;
                 try {
-                    regionInfo = ipParser.analyseIp(logs[0] != null ? logs[0] : null);
+                    regionInfo = ipUtil.analyseIp(ipUtil.getIpArea(logs[0] != null ? logs[0] : null));
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
@@ -81,6 +89,7 @@ public class LogETLTest extends BaseMR {
                     city = regionInfo.getCity();
                 }
             }
+            UserAgentInfo userAgentInfo = null;
             try {
                 if (logs.length != 0 && logs[2] != null) {
                     String dateStirng = logs[2];
@@ -104,6 +113,16 @@ public class LogETLTest extends BaseMR {
                 }
                 if (logs.length != 0 && logs[8] != null) {
                     userAgent = logs[8];
+                    userAgentInfo = UserAgent.uasParser.parse(userAgent);
+                    if (userAgentInfo != null) {
+                        OsCompany = userAgentInfo.getOsCompany();
+                        OsFamily = userAgentInfo.getOsFamily();
+                        OsName = userAgentInfo.getOsName();
+                        Type = userAgentInfo.getType();
+                        UaFamily = userAgentInfo.getUaFamily();
+                        BrowserVersionInfo = userAgentInfo.getBrowserVersionInfo();
+                        DeviceType = userAgentInfo.getDeviceType();
+                    }
                 }
                 if (logs.length != 0 && logs[7] != null) {
                     ref = logs[7];
@@ -129,6 +148,13 @@ public class LogETLTest extends BaseMR {
             record.put("day", day == "" || day == null ? "" : day);
             record.put("dayDate", dayDate == "" || dayDate == null ? "" : dayDate);
 
+            record.put("OsCompany", OsCompany == null ? "" : OsCompany);
+            record.put("OsFamily", OsFamily == null ? "" : OsFamily);
+            record.put("OsName", OsName == null ? "" : OsName);
+            record.put("Type", Type == null ? "" : Type);
+            record.put("UaFamily", UaFamily == null ? "" : UaFamily);
+            record.put("BrowserVersionInfo", BrowserVersionInfo == null ? "" : BrowserVersionInfo);
+            record.put("DeviceType", DeviceType == null ? "" : DeviceType);
             context.write(new AvroKey<>(record), NullWritable.get());
         }
     }
