@@ -56,20 +56,25 @@ public class TextAvro extends BaseMR {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
+            String date=format.split(":")[0];
+            String time=format.split(":",2)[1];
 
             String useAgent = valueOut.get("useAgent");
             UserAgentInfo userAgentInfo = UserAgent.uasParser.parse(useAgent);
             GenericRecord genericRecord = new GenericData.Record(schema);
 
-            genericRecord.put("uptime",format);
+            genericRecord.put("date",date == null ? "":date);
+            genericRecord.put("time",time== null ? "":time);
             genericRecord.put("id",valueOut.get("id") == null ? "":valueOut.get("id"));
             genericRecord.put("country",valueOut.get("country") == null ? "":valueOut.get("country"));
             genericRecord.put("ref",valueOut.get("ref") == null ? "":valueOut.get("ref"));
-            genericRecord.put("OsCompany",userAgentInfo.getOsCompany()  == null ? "":userAgentInfo.getOsCompany());
-            genericRecord.put("Type",userAgentInfo.getType());
-            genericRecord.put("UaFamily",userAgentInfo.getUaFamily());
-            genericRecord.put("DeviceType",userAgentInfo.getDeviceType());
+            genericRecord.put("OsCompany",userAgentInfo.getOsCompany() == null ? "":userAgentInfo.getOsCompany());
+            genericRecord.put("OsFamily",userAgentInfo.getOsFamily()  == null ? "":userAgentInfo.getOsFamily());
+            genericRecord.put("OsName",userAgentInfo.getOsName()== null ? "":userAgentInfo.getOsName());
+            genericRecord.put("Type",userAgentInfo.getType()== null ? "":userAgentInfo.getType());
+            genericRecord.put("UaFamily",userAgentInfo.getUaFamily()== null ? "":userAgentInfo.getUaFamily());
+            genericRecord.put("BrowserVersionInfo",userAgentInfo.getBrowserVersionInfo()== null ? "":userAgentInfo.getBrowserVersionInfo());
+            genericRecord.put("DeviceType",userAgentInfo.getDeviceType()== null ? "":userAgentInfo.getDeviceType());
 
             context.write(new AvroKey<GenericRecord>(genericRecord) , NullWritable.get());
         }
