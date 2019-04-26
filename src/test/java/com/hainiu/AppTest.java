@@ -1,6 +1,6 @@
 package com.hainiu;
 
-import com.hainiu.util.IPParser;
+import com.hainiu.util.IPUtil;
 import org.junit.Test;
 
 /**
@@ -14,7 +14,7 @@ public class AppTest
     @Test
     public void shouldAnswerWithTrue()
     {
-        IPParser.RegionInfo regionInfo = IPParser.getInstance().analyseIp("120.196.100.99");
-        System.out.println(regionInfo.getProvince());
+        IPUtil ipUtil = new IPUtil();
+        System.out.println(ipUtil.getIpArea("103.219.186.27"));
     }
 }
