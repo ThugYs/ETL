@@ -3,6 +3,7 @@ package com.hainiu.qiaoChunYu.logETL;
 import com.hainiu.huangLingYu.UserAgent;
 import com.hainiu.util.IPParser;
 import com.hainiu.util.IPUtil;
+import com.hainiu.util.UserAgentUtil;
 import com.hainiu.util.base.BaseMR;
 import cz.mallat.uasparser.UserAgentInfo;
 import org.apache.avro.Schema;
@@ -40,6 +41,7 @@ public class LogETLTest extends BaseMR {
 
         Logger logger = LoggerFactory.getLogger(LogETLTest.class);
         IPUtil ipUtil = null;
+        UserAgentUtil userAgentUtil = null;
 
         @Override
         protected void setup(Context context) throws IOException, InterruptedException {
@@ -48,6 +50,8 @@ public class LogETLTest extends BaseMR {
             }
             ipUtil = new IPUtil();
             ipUtil.loadIPFile();
+            userAgentUtil = new UserAgentUtil();
+            userAgentUtil.setUASparser();
         }
 
         @Override
@@ -113,7 +117,7 @@ public class LogETLTest extends BaseMR {
                 }
                 if (logs.length != 0 && logs[8] != null) {
                     userAgent = logs[8];
-                    userAgentInfo = UserAgent.uasParser.parse(userAgent);
+                    userAgentInfo = userAgentUtil.parse(userAgent);
                     if (userAgentInfo != null) {
                         OsCompany = userAgentInfo.getOsCompany();
                         OsFamily = userAgentInfo.getOsFamily();
