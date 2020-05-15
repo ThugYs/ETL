@@ -231,10 +231,10 @@ public class IPUtil {
 		return r;
 	}
 	
-//	public static void main(String[] args) {
-//		IPUtil util = new IPUtil();
-//		util.loadIPFile();
-//		System.out.println(util.getIpArea("202.8.77.12"));
-//	}
+	public static void main(String[] args) {
+		IPUtil util = new IPUtil();
+		util.loadIPFile();
+		System.out.println(util.getIpArea("202.8.77.12"));
+	}
 
 }
